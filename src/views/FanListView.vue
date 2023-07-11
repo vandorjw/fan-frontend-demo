@@ -22,6 +22,49 @@ export default {
     return {
       fanList
     };
+  },
+  methods: {
+    toggleDirection(fan: Fan) {
+      const url = `https://fan-api-demo-d0fa45500d2d.herokuapp.com/api/fans/${fan.id}/toggle_direction/`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          console.log('Direction toggled:', data);
+        })
+        .catch(error => {
+          console.error('Failed to toggle direction:', error);
+        });
+    },
+    cycleSpeed(fan: Fan) {
+      const url = `https://fan-api-demo-d0fa45500d2d.herokuapp.com/api/fans/${fan.id}/cycle_speed`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          fan.speed_state = data.speed_state;
+          console.log('Speed changed:', data);
+        })
+        .catch(error => {
+          console.error('Failed to change speed:', error);
+        });
+    },
+  },
+  computed: {
+    getSpeedLabel() {
+      return (speedState: number) => {
+        switch (speedState) {
+          case 0:
+            return 'OFF';
+          case 1:
+            return 'SLOW';
+          case 2:
+            return 'MEDIUM';
+          case 3:
+            return 'FAST';
+          default:
+            return 'Unknown';
+        }
+      };
+    }
   }
 };
 </script>
@@ -49,26 +92,47 @@ export default {
             <div class="tab-content">
 
               <div role="tabpanel" class="tab-pane fade in active show" :id="'status' + fan.id">
-                <div class="ns-form-group ns-toggle--ui-switch">
-                  <h3 class="ns-label-wrapper">
-                    <div class="ns-label" for="event-name">{{ fan.name }}</div>
-                  </h3>
 
-                  <h4>Direction</h4>
-                  <input type="checkbox" :id="'fanDirection' + fan.id" class="ns-toggle__input">
-                  <label class="ns-toggle__label" :for="'fanDirection' + fan.id">
-                    <div class="ns-toggle__disabled-msg" data-checked="Pending" data-unchecked="Completed">
+                <h2>Fan Location: {{ fan.name }}</h2>
+
+                <div class="row">
+
+                  <div class="col-md-6 col-xs-12">
+                    <div class="ns-form-group ns-toggle--ui-switch">
+                      <h3 class="ns-label-wrapper">
+                        <div class="ns-label" for="event-name">Direction</div>
+                      </h3>
+                      <input type="checkbox" :id="'fanDirection' + fan.id" class="ns-toggle__input" :checked="fan.direction_state === 1" @change="toggleDirection(fan)">
+                      <label class="ns-toggle__label" :for="'fanDirection' + fan.id">
+                        <div class="ns-toggle__disabled-msg" data-checked="Pending" data-unchecked="Completed">
+                        </div>
+                        <span class="ns-toggle__screenreader">Automatic text notifications</span>
+                        <div class="ns-toggle-option-LEFT mr-2" aria-hidden="true">
+                          Forward
+                        </div>
+                        <div class="ns-toggle-switch" role="presentation" aria-hidden="true"></div>
+                        <div class="ns-toggle-option-RIGHT ml-2" aria-hidden="true">
+                          Reverse
+                        </div>
+                      </label>
                     </div>
-                    <span class="ns-toggle__screenreader">Automatic text notifications</span>
-                    <div class="ns-toggle-option-LEFT mr-2" aria-hidden="true">
-                      Forward
+                  </div>
+
+                  <div class="col-md-6 col-xs-12">
+                    <div class="ns-form-group">
+                      <h3 class="ns-label-wrapper">
+                        <label class="ns-label">
+                          Speed
+                        </label>
+                      </h3>
+                      <div class="ns-input__wrapper inline">
+                        <button class="btn-lg btn-default px-120" @click="cycleSpeed(fan)">{{ getSpeedLabel(fan.speed_state) }}</button>
+                      </div>
                     </div>
-                    <div class="ns-toggle-switch" role="presentation" aria-hidden="true"></div>
-                    <div class="ns-toggle-option-RIGHT ml-2" aria-hidden="true">
-                      Reverse
-                    </div>
-                  </label>
+                  </div>
+
                 </div>
+
               </div><!-- / tabpanel status -->
 
               <div role="tabpanel" class="tab-pane fade" :id="'settings' + fan.id">
@@ -98,5 +162,8 @@ export default {
 <style>
 .fan-list {
   width: 100%;
+}
+.px-120 {
+  width: 120px;
 }
 </style>

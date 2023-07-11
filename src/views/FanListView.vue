@@ -1,9 +1,29 @@
-<script setup>
+<script lang="ts">
 import { ref } from 'vue';
-const fanList = ref(null);
-fetch('https://fan-api-demo-d0fa45500d2d.herokuapp.com/api/fans/')
-  .then(response => response.json())
-  .then(data => fanList.value = data);
+
+interface Fan {
+  id: number;
+  name: string;
+  slug: string;
+  direction_state: number;
+  speed_state: number;
+}
+
+export default {
+  setup() {
+    const fanList = ref<Fan[]>([]);
+
+    fetch('https://fan-api-demo-d0fa45500d2d.herokuapp.com/api/fans/')
+      .then(response => response.json())
+      .then((data: Fan[]) => {
+        fanList.value = data;
+      });
+
+    return {
+      fanList
+    };
+  }
+};
 </script>
 
 <template>
@@ -73,8 +93,6 @@ fetch('https://fan-api-demo-d0fa45500d2d.herokuapp.com/api/fans/')
 
   </div>
 </template>
-
-
 
 
 <style>

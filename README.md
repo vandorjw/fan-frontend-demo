@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/33531553-0672-40b5-800a-2abf312f3085/deploy-status)](https://app.netlify.com/sites/hilarious-fox-478053/deploys)
+
 # fan-frontend
 
 This template should help get you started developing with Vue 3 in Vite.

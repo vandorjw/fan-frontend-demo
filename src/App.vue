@@ -30,6 +30,26 @@ import { RouterLink, RouterView } from 'vue-router'
   </header>
 
 
+  <div class="ns-phase-banner">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <p class="ns-phase-banner__content">
+            <strong class="ns-tag ns-phase-banner__content__tag">
+              Alpha
+            </strong>
+            <span class="ns-phase-banner__text">
+              This is a new service that we're still developing. Try the service and <a
+                href="https://github.com/vandorjw/fan-frontend-demo/issues">send us your comments and
+                suggestions</a>. Your feedback will help make the service easier to use for everyone.
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <!-- -------------------------------------------------- END HEADER --------------------------------------------------- -->
 
   <div id="nav-placeholder4">
@@ -46,7 +66,7 @@ import { RouterLink, RouterView } from 'vue-router'
               <RouterLink to="/" class="nav-link">Home</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink to="/about" class="nav-link">About</RouterLink>
+              <RouterLink to="/fans" class="nav-link">Fan List</RouterLink>
             </li>
 
           </ul>

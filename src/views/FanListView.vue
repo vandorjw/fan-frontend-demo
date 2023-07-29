@@ -1,6 +1,8 @@
 <script lang="ts">
 import { ref } from 'vue';
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
+
 interface Fan {
   id: number;
   name: string;
@@ -12,8 +14,8 @@ interface Fan {
 export default {
   setup() {
     const fanList = ref<Fan[]>([]);
-
-    fetch('https://fan-api-demo-d0fa45500d2d.herokuapp.com/api/fans/')
+    const url = `${apiBaseUrl}/api/fans/`;
+    fetch(url, {method: 'GET'})
       .then(response => response.json())
       .then((data: Fan[]) => {
         fanList.value = data;
@@ -25,8 +27,8 @@ export default {
   },
   methods: {
     toggleDirection(fan: Fan) {
-      const url = `https://fan-api-demo-d0fa45500d2d.herokuapp.com/api/fans/${fan.id}/toggle_direction/`;
-      fetch(url)
+      const url = `${apiBaseUrl}/api/fans/${fan.id}/toggle_direction/`;
+      fetch(url, {method: 'POST'})
         .then(response => response.json())
         .then(data => {
           console.log('Direction toggled:', data);
@@ -36,8 +38,8 @@ export default {
         });
     },
     cycleSpeed(fan: Fan) {
-      const url = `https://fan-api-demo-d0fa45500d2d.herokuapp.com/api/fans/${fan.id}/cycle_speed`;
-      fetch(url)
+      const url = `${apiBaseUrl}/api/fans/${fan.id}/cycle_speed/`;
+      fetch(url, {method: 'POST'})
         .then(response => response.json())
         .then(data => {
           fan.speed_state = data.speed_state;
